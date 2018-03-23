@@ -37,9 +37,10 @@ RCT_CUSTOM_VIEW_PROPERTY(props, NSDictonary *, UIView)
     NSNumber *density = [json objectForKey: @"density"];
     NSNumber *phaseShift = [json objectForKey: @"phaseShift"];
     
-    SCSiriWaveformView *siriWave = [[SCSiriWaveformView alloc] initWithFrame: CGRectMake(0, 0, [width intValue], [height intValue])];
+    WaveView *siriWave = [[WaveView alloc] initWithFrame: CGRectMake(0, 0, [width intValue], [height intValue])];
     siriWave.numberOfWaves = [numberOfWaves floatValue];
-    siriWave.backgroundColor = [RNSiriWaveView colorFromHexCode: backgroundColor];
+    siriWave.backgroundColor = [UIColor clearColor];
+//    siriWave.backgroundColor = [RNSiriWaveView colorFromHexCode: backgroundColor];
     siriWave.waveColor = [RNSiriWaveView colorFromHexCode: waveColor];
     siriWave.primaryWaveLineWidth = [primaryWaveLineWidth floatValue];
     siriWave.secondaryWaveLineWidth = [secondaryWaveLineWidth floatValue];
@@ -54,7 +55,7 @@ RCT_CUSTOM_VIEW_PROPERTY(props, NSDictonary *, UIView)
 
 RCT_CUSTOM_VIEW_PROPERTY(startAnimation, bool, UIView) {
     if ([json integerValue] == 1 && timer == NULL) {
-        SCSiriWaveformView *siriWave = [[view subviews] objectAtIndex: 0];
+        WaveView *siriWave = [[view subviews] objectAtIndex: 0];
         
         // Timer
         timer = [NSTimer scheduledTimerWithTimeInterval: 0.02
@@ -73,7 +74,7 @@ RCT_CUSTOM_VIEW_PROPERTY(stopAnimation, bool, UIView) {
 }
 
 -(void)targetMethod:(NSTimer *)timer  {
-    SCSiriWaveformView *siriWave = [timer userInfo];
+    WaveView *siriWave = [timer userInfo];
 
     [siriWave updateWithLevel: [self _normalizedPowerLevelFromDecibels: .1]];
 }
