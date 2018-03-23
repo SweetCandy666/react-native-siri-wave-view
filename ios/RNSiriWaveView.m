@@ -54,6 +54,10 @@ RCT_CUSTOM_VIEW_PROPERTY(props, NSDictonary *, UIView)
 }
 
 RCT_CUSTOM_VIEW_PROPERTY(startAnimation, bool, UIView) {
+    if ([json integerValue] == 1) {
+        [timer invalidate];
+        timer = NULL;
+    }
     if ([json integerValue] == 1 && timer == NULL) {
         WaveView *siriWave = [[view subviews] objectAtIndex: 0];
         
