@@ -58,14 +58,12 @@ RCT_CUSTOM_VIEW_PROPERTY(startAnimation, bool, UIView) {
         [timer invalidate];
         timer = NULL;
     }
-    if ([json integerValue] == 1 && timer == NULL) {
-        WaveView *siriWave = [[view subviews] objectAtIndex: 0];
-        
+    if ([json integerValue] == 1 && timer == NULL) {      
         // Timer
         timer = [NSTimer scheduledTimerWithTimeInterval: 0.02
                                          target:self
                                        selector: @selector(targetMethod:)
-                                       userInfo: siriWave
+                                       userInfo: view
                                         repeats:YES];
     }
 }
@@ -78,8 +76,11 @@ RCT_CUSTOM_VIEW_PROPERTY(stopAnimation, bool, UIView) {
 }
 
 -(void)targetMethod:(NSTimer *)timer  {
-    WaveView *siriWave = [timer userInfo];
-
+    UIView *view = [timer userInfo];
+    if (![[view subviews] count]) {
+      return;
+    }
+    WaveView *siriWave = [[view subviews] objectAtIndex: 0];
     [siriWave updateWithLevel: [self _normalizedPowerLevelFromDecibels: .1]];
 }
 
